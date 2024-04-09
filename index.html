@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Downloader</title>
+    <link rel="icon" type="image/x-icon" href="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            margin-bottom: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        h1 {
+            color: #1db954;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #1db954;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        button {
+            background-color: darkgrey;
+            border: none;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #14863c;
+        }
+
+        button:focus {
+            outline: none;
+            background-color: black;
+        }
+
+        button:active {
+            background-color: red;
+            transform: scale(0.95);
+        }
+
+        .error-message {
+            color: #f00;
+            margin-top: 10px;
+        }
+
+        .success-message {
+            color: #1db954;
+            margin-top: 10px;
+        }
+
+        .song-item {
+            display: flex;
+            align-items: center;
+            text-align: left;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            height: 10px;
+        }
+
+        .song-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .song-title {
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .song-details {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: calc(100% - 180px);
+        }
+
+        .song-time {
+            font-size: 14px;
+            color: #777;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" alt="Spotify Logo">
+        </div>
+        <h1>Download Spotify Songs</h1>
+        <p>Enter a music title and download your favorite songs.</p>
+        <input type="text" id="song-title" placeholder="Enter a music title">
+        <button id="btn">Download</button>
+        <div class="error-message" id="error-message" style="display: none;"></div>
+        <div class="success-message" id="success-message" style="display: none;">Download successful!</div>
+        
+    </div>
+
+    <div class="container">
+        <div class="song-item">
+            <img src="https://i.imgur.com/fVhjZcQ.jpeg" alt="The Night We met logo" class="song-image">
+            <div class="song-details">
+                <p class="song-title">The Night We Met</p>
+                <p class="song-time">3:28</p>
+            </div>
+        </div>
+    </div>
+    <div style="background-color: #ddd; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); padding: 10px; margin-top: 20px; font-size: 12px;">
+        <p>Modified by Joshua Apostol</p>
+        <p>Credit to the originally owner Cyril Matt O. Encenso</p>
+        <p>Credit to the API Owner joshua Sy</p>
+        <script type="text/javascript" src="https://www.counters-free.net/count/f91g"></script><br>
+ <a href='https://www.easybooking.eu/'>Hotelsoftware mit Channelmanager</a> <script type='text/javascript' src='https://www.whomania.com/ctr?id=cca90fc2ae49678f5d72a69f64a0bdec777564c3'></script>
+    </div>
+
+    <script>
+        const url = "https://joshweb.click/spotify?q=";
+        const btn = document.getElementById("btn");
+        const songTitle = document.getElementById("song-title");
+        const errorMessage = document.getElementById("error-message");
+        const successMessage = document.getElementById("success-message");
+
+        async function download() {
+            const song = songTitle.value.trim();
+            if (!song) {
+                errorMessage.innerText = "Please enter a music title";
+                errorMessage.style.display = "block";
+                return;
+            }
+
+            try {
+                const response = await fetch(url + encodeURIComponent(song));
+                const data = await response.json();
+                const link = data.result;
+
+                if (link) {
+                    const a = document.createElement("a");
+                    a.href = link;
+                    a.download = `${song}.mp3`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    errorMessage.style.display = "none";
+                    successMessage.style.display = "block";
+                    setTimeout(() => {
+                        successMessage.style.display = "none";
+                    }, 2000);
+                } else {
+                    throw new Error("No download link available");
+                }
+            } catch (error) {
+                errorMessage.innerText = "An error occurred while fetching the download link";
+                errorMessage.style.display = "block";
+                console.error(error);
+            }
+        }
+
+        btn.addEventListener("click", function() {
+            btn.classList.add("clicked");
+            download();
+
+            setTimeout(function() {
+                btn.classList.remove("clicked");
+            }, 300);
+        });
+    </script>
+    
+</body>
+
+</html>
